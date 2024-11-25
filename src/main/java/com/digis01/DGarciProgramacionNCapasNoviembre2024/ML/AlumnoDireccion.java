@@ -12,5 +12,23 @@ public class AlumnoDireccion {
     
     public Alumno Alumno;
     public Direccion Direccion;
+
+    public Alumno getAlumno() {
+        return Alumno;
+    }
+
+    public void setAlumno(Alumno Alumno) {
+        this.Alumno = Alumno;
+    }
+
+    public Direccion getDireccion() {
+        return Direccion;
+    }
+
+    public void setDireccion(Direccion Direccion) {
+        this.Direccion = Direccion;
+    }
+    
+    
     
 }

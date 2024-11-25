@@ -14,7 +14,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </head>
     <body>
         <div class="container">
-            Agregar alumno
+            <!--action / method-->
+            <form th:action="@{/Alumno/form}" method="post" th:object="${alumnoDireccion}">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="NombreAlumno" class="form-label"> Nombre:</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <input id="NombreAlumno" type="text" class="form-control" placeholder="Nombre" th:field="*{Alumno.Nombre}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ApellidoPaterno" class="form-label"> Apellido Paterno:</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <input id="ApellidoPaterno" type="text" class="form-control" placeholder="ApellidoPaterno" th:field="*{Alumno.ApellidoPaterno}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ApellidoMaterno" class="form-label"> Nombre:</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <input id="ApellidoMaterno" type="text" class="form-control" placeholder="ApellidoMaterno" th:field="*{Alumno.ApellidoMaterno}">
+                        </div>
+
+                    </div>
+                </div>
+
+                <input type="submit" value="Guardar">
+            </form>
         </div>
     </body>
 </html>

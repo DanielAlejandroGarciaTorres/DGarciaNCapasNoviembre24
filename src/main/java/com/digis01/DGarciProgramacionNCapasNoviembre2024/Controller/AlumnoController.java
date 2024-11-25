@@ -7,14 +7,18 @@ package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.AlumnoDAOImplementation;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Colonia;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Direccion;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Result;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Semestre;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -40,14 +44,24 @@ public class AlumnoController {
         if (IdAlumno == 0 ) { // Agregar
             AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
             alumnoDireccion.Alumno = new Alumno();
+            alumnoDireccion.Alumno.Semestre = new Semestre();
             alumnoDireccion.Direccion = new Direccion();
+            alumnoDireccion.Direccion.Colonia = new Colonia();
             
             model.addAttribute("alumnoDireccion",alumnoDireccion);
         } else { // editar
             // todavia no hago nada
         }
         
+        
         return "AlumnoForm";
+    }
+    
+    @PostMapping("/form")
+    public String  Formulario(@ModelAttribute AlumnoDireccion alumnoDireccion) {
+//        alumnoDAOImplementation.Add(alumnoDireccion);
+        
+        return "";
     }
     
 }
