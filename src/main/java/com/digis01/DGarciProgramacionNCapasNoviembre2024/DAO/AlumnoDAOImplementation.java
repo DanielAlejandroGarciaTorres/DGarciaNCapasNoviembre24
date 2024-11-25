@@ -2,7 +2,12 @@ package com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO;
 
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Colonia;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Direccion;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Estado;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Municipio;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Result;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Semestre;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -29,25 +34,17 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
                 callableStatement.execute();
                 ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
                 List<AlumnoDireccion> listaAlumnos = new ArrayList<>();
-                
+                AlumnoRowMapper alumnoRowMapper = new AlumnoRowMapper();
                 while (resultSet.next()) {
-                    AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
-
-                    alumnoDireccion.Alumno = new Alumno();
-
-                    alumnoDireccion.Alumno.setIdAlumno(resultSet.getInt("IdAlumno"));
-                    alumnoDireccion.Alumno.setNombre(resultSet.getString("NombreAlumno"));
-
-                    /* Dirección*/
-                    listaAlumnos.add(alumnoDireccion);
+                    listaAlumnos.add(alumnoRowMapper.mapRow(resultSet, resultSet.getRow()));
                 }
 
                 return listaAlumnos;
             });
-            
+
             result.correct = true;
             result.object = alumnosDireccion;
-            
+
         } catch (Exception ex) {
             result.errorMessage = ex.getLocalizedMessage();
             result.correct = false;

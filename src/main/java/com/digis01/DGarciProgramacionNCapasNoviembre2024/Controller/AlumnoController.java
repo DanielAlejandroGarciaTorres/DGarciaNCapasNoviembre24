@@ -5,11 +5,16 @@
 package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.AlumnoDAOImplementation;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Direccion;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Result;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -21,12 +26,28 @@ public class AlumnoController {
     
     @GetMapping
     public String Inicio(Model model){
-        
+        // Model - mandar información por medio de un modelo a la vista
         Result result = alumnoDAOImplementation.GetAll();
         
-        /* intenatar mandar a la vista*/
+        model.addAttribute("alumnosDireccion", (List<AlumnoDireccion>) result.object);
         
         return "AlumnoIndex";
+    }
+    
+    @GetMapping("/form/{IdAlumno}")
+    public String Formulario(@PathVariable int IdAlumno, Model model){
+        
+        if (IdAlumno == 0 ) { // Agregar
+            AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
+            alumnoDireccion.Alumno = new Alumno();
+            alumnoDireccion.Direccion = new Direccion();
+            
+            model.addAttribute("alumnoDireccion",alumnoDireccion);
+        } else { // editar
+            // todavia no hago nada
+        }
+        
+        return "AlumnoForm";
     }
     
 }
