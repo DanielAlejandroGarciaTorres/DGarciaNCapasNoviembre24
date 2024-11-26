@@ -50,7 +50,11 @@ public class AlumnoController {
             
             model.addAttribute("alumnoDireccion",alumnoDireccion);
         } else { // editar
-            // todavia no hago nada
+            
+            Result result = alumnoDAOImplementation.GetById(IdAlumno);
+            
+            model.addAttribute("alumnoDireccion", (AlumnoDireccion) result.object);
+        
         }
         
         
@@ -60,7 +64,11 @@ public class AlumnoController {
     @PostMapping("/form")
     public String  Formulario(@ModelAttribute AlumnoDireccion alumnoDireccion) {
 //        alumnoDAOImplementation.Add(alumnoDireccion);
-        
+        if(alumnoDireccion.Alumno.getIdAlumno() == 0) {
+            /*Agregar*/
+        } else  {
+            
+        }
         return "";
     }
     

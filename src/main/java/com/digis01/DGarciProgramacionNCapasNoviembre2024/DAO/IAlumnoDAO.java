@@ -10,4 +10,6 @@ public interface IAlumnoDAO {
     Result GetAll();
     
     Result Add(AlumnoDireccion alumnoDireccion);
+    
+    Result GetById(int IdALumno);
 }

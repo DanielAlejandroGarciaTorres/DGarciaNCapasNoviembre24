@@ -4,37 +4,40 @@
  */
 package com.digis01.DGarciProgramacionNCapasNoviembre2024.ML;
 
+import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  *
  * @author ALIEN 34
  */
 public class Alumno {
     
+    /*atributo  public int numero*/
+    
     private int IdAlumno;
     private String Nombre;
     private String ApellidoPaterno;
     private String ApellidoMaterno;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date FechaNacimiento;
     private String UserName;
     private String Email;
-    // propiedad de navegación 
-    public Semestre Semestre;
+    private String Password;
+    public Semestre Semestre; // Propiedad de navegación
+    private String Imagen;
+    private int Status;
 
-    public Alumno(){
-        
+    public Alumno() {
     }
     
-    public Alumno(String Nombre, String ApellidoPaterno, String ApellidoMaterno) {
-        this.Nombre = Nombre;
-        this.ApellidoPaterno = ApellidoPaterno;
-        this.ApellidoMaterno = ApellidoMaterno;
+
+    public int getIdAlumno() {
+        return IdAlumno;
     }
-    
-    public void setIdAlumno(int idAlumno){
-        this.IdAlumno = idAlumno;
-    }
-    
-    public int getIdAlumno(){
-        return this.IdAlumno;
+
+    public void setIdAlumno(int IdAlumno) {
+        this.IdAlumno = IdAlumno;
     }
 
     public String getNombre() {
@@ -61,6 +64,15 @@ public class Alumno {
         this.ApellidoMaterno = ApellidoMaterno;
     }
 
+
+    public Date getFechaNacimiento() {
+        return FechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date FechaNacimiento) {
+        this.FechaNacimiento = FechaNacimiento;
+    }
+
     public String getUserName() {
         return UserName;
     }
@@ -76,6 +88,37 @@ public class Alumno {
     public void setEmail(String Email) {
         this.Email = Email;
     }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+
+    public Semestre getSemestre() {
+        return Semestre;
+    }
+
+    public void setSemestre(Semestre Semestre) {
+        this.Semestre = Semestre;
+    }
     
+     public String getImagen() {
+        return Imagen;
+    }
+
+    public void setImagen(String Imagen) {
+        this.Imagen = Imagen;
+    }
+    
+    public int getStatus() {
+        return Status;
+    }
+
+    public void setStatus(int Status) {
+        this.Status = Status;
+    }
     
 }

@@ -58,4 +58,34 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
+    public Result GetById(int IdALumno) {
+        Result result = new Result();
+
+        try {
+            AlumnoDireccion alumnoDireccion = jdbcTemplate.execute("{CALL AlumnoGetById(?,?)}", (CallableStatementCallback<AlumnoDireccion>) callableStatement -> {
+                callableStatement.setInt(1, IdALumno);
+                callableStatement.registerOutParameter(2, Types.REF_CURSOR);
+                callableStatement.execute();
+                ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
+                
+                AlumnoRowMapper alumnoRowMapper = new AlumnoRowMapper();
+                if (resultSet.next()) {
+                    AlumnoDireccion alumnoDireccionRespuesta = alumnoRowMapper.mapRow(resultSet, resultSet.getRow());
+                    return alumnoDireccionRespuesta;
+                } else {
+                    return null;
+                }
+            });
+            result.object = alumnoDireccion;
+            result.correct = true;
+            
+        } catch (Exception ex) {
+            result.errorMessage = ex.getLocalizedMessage();
+            result.correct = false;
+            result.ex = ex;
+        }
+        return result;
+    }
+
 }

@@ -50,6 +50,14 @@ public class Direccion {
     public void setNumeroExterior(String NumeroExterior) {
         this.NumeroExterior = NumeroExterior;
     }
+
+    public Colonia getColonia() {
+        return Colonia;
+    }
+
+    public void setColonia(Colonia Colonia) {
+        this.Colonia = Colonia;
+    }
     
     
     
