@@ -69,7 +69,9 @@ public class AlumnoController {
         } else  {
             
         }
-        return "";
+        
+        return "redirect:/Alumno";
     }
+    
     
 }

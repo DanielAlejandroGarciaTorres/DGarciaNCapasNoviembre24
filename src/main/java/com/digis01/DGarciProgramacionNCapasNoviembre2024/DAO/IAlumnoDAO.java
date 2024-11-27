@@ -12,4 +12,13 @@ public interface IAlumnoDAO {
     Result Add(AlumnoDireccion alumnoDireccion);
     
     Result GetById(int IdALumno);
+    
+    /*
+        Update
+    
+        Delete
+    
+    */
+    
+    
 }

@@ -31,7 +31,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <td th:text="${alumnoDireccion.Alumno.Nombre} + ' ' + ${alumnoDireccion.Alumno.ApellidoPaterno} + ' ' + ${alumnoDireccion.Alumno.ApellidoMaterno}"></td>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td><a class="btn btn-danger" th:href="@{/Alumno/delete/{IdAlumno}(IdAlumno=${alumnoDireccion.Alumno.IdAlumno})}"><i class="bi bi-pencil-square"></i></a></td>
                     </tr>
                 </tbody>
             </table> 

@@ -16,6 +16,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div class="container">
             <form th:action="@{/Alumno/form}" method="post" th:object="${alumnoDireccion}" >
 
+                <input type="hidden" name="IdAlumno" th:field="*{Alumno.IdAlumno}">
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="NombreAlumno" class="form-label">Nombre</label>
@@ -76,7 +78,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <input id="ColoniaAlumno" type="text" class="form-control" placeholder="Colonia" th:field="*{Direccion.Colonia.IdColonia}">
                     </div>     
                 </div>
-                <button class="btn btn-success" type="submit"> Agregar</button>
+
+
+                <!--                <button class="btn btn-success" type="submit"> Agregar</button>-->
+
+                <button th:if="*{Alumno.IdAlumno == 0}" class="btn btn-success" type="submit"> Agregar</button>
+                <button th:unless="*{Alumno.IdAlumno == 0}" class="btn btn-warning" type="submit"> Actualiza</button>
+                
+                <button th:text="*{Alumno.IdAlumno == 0 ? 'Agregar Ternario' : 'Actualizar ternario'}" class="btn btn-success" type="submit"> Actualiza</button>
+                
+                
+                
         </div>
 
 
