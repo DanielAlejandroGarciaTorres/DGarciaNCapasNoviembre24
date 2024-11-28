@@ -11,10 +11,12 @@ import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Colonia;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Direccion;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Result;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Semestre;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,8 +64,17 @@ public class AlumnoController {
     }
     
     @PostMapping("/form")
-    public String  Formulario(@ModelAttribute AlumnoDireccion alumnoDireccion) {
+    public String  Formulario(@Valid @ModelAttribute AlumnoDireccion alumnoDireccion,
+            BindingResult bindingResult,
+            Model model
+            ) {
 //        alumnoDAOImplementation.Add(alumnoDireccion);
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("alumnoDireccion", alumnoDireccion);
+            return "AlumnoForm";
+        }
+    
         if(alumnoDireccion.Alumno.getIdAlumno() == 0) {
             /*Agregar*/
         } else  {

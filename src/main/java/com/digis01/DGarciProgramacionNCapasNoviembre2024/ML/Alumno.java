@@ -4,6 +4,9 @@
  */
 package com.digis01.DGarciProgramacionNCapasNoviembre2024.ML;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,7 +19,9 @@ public class Alumno {
     /*atributo  public int numero*/
     
     private int IdAlumno;
-    private String Nombre;
+    @NotEmpty (message = "No puede esta vacio")
+    @Size(min = 3, max = 10, message = "Rango de 3 a 10 datos")
+    private String Nombre; 
     private String ApellidoPaterno;
     private String ApellidoMaterno;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
