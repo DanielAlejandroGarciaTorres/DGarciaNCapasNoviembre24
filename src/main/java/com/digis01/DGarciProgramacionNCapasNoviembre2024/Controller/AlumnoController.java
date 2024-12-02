@@ -5,6 +5,7 @@
 package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.AlumnoDAOImplementation;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.SemestreDAOImplementation;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Colonia;
@@ -30,6 +31,9 @@ public class AlumnoController {
     @Autowired
     private AlumnoDAOImplementation alumnoDAOImplementation;
     
+    @Autowired
+    private SemestreDAOImplementation semestreDAOImplementation;
+    
     @GetMapping
     public String Inicio(Model model){
         // Model - mandar información por medio de un modelo a la vista
@@ -42,6 +46,11 @@ public class AlumnoController {
     
     @GetMapping("/form/{IdAlumno}")
     public String Formulario(@PathVariable int IdAlumno, Model model){
+        
+        Result resultSemestre = semestreDAOImplementation.GetAll();
+        model.addAttribute("semestres", resultSemestre.objects);
+        
+        
         
         if (IdAlumno == 0 ) { // Agregar
             AlumnoDireccion alumnoDireccion = new AlumnoDireccion();

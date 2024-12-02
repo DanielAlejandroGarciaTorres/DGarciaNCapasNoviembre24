@@ -24,7 +24,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <label for="NombreAlumno" class="form-label">Nombre</label>
                         <div class="input-group ">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                            <input id="NombreAlumno" type="text" class="form-control" placeholder="Nombre" th:field="*{Alumno.Nombre}" onkeypress="return justLetters(event,this)">
+                            <input id="NombreAlumno" type="text" class="form-control" placeholder="Nombre" th:field="*{Alumno.Nombre}" onkeypress="return justLetters(event, this)">
                         </div>  
                         <span id="NombreAlumnoError" style="color: red"></span>
                         <span class="text-danger" th:if="${#fields.hasErrors('Alumno.Nombre')}" th:errors="*{Alumno.Nombre}"></span>
@@ -33,7 +33,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <label for="ApellidoPaternoAlumno" class="form-label">Apellido Paterno</label>
                         <div class="input-group ">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                            <input id="ApellidoPaternoAlumno" type="text" class="form-control" placeholder="Apellido Paterno" th:field="*{Alumno.ApellidoPaterno}" onkeypress="return justLettersAscii(event,this)">
+                            <input id="ApellidoPaternoAlumno" type="text" class="form-control" placeholder="Apellido Paterno" th:field="*{Alumno.ApellidoPaterno}" onkeypress="return justLettersAscii(event, this)">
                         </div>
                         <span id="ApellidoPaternoAlumnoError" style="color: red"></span>
                     </div>
@@ -57,7 +57,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <label for="SemestreAlumno" class="form-label">Semestre</label>
                         <div class="input-group ">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                            <input id="SemestreAlumno" type="text" class="form-control" placeholder="Semestre" th:field="*{Alumno.Semestre.IdSemestre}">
+                            <select class="form-select" th:field="*{Alumno.Semestre.IdSemestre}">
+                                <option value=0>Seleccione un semestre</option>
+                                <option th:each="semestre : ${semestres}" th:value="${semestre.IdSemestre}" th:text="${semestre.Nombre}"></option>
+                            </select>
+                            <!--<input id="SemestreAlumno" type="text" class="form-control" placeholder="Semestre" th:field="*{Alumno.Semestre.IdSemestre}">-->
                         </div>     
                     </div>
                 </div>
@@ -105,12 +109,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 </div>
 <script>
-    function justLetters(event, elemento){
+    function justLetters(event, elemento) {
         var regEx = /^[a-zA-Z]+$/;
-        var key = event.key; 
-        var spanError = document.getElementById(elemento.id+'Error');
-        
-        if(key.match(regEx)){
+        var key = event.key;
+        var spanError = document.getElementById(elemento.id + 'Error');
+
+        if (key.match(regEx)) {
             spanError.innerHTML = "";
             return true;
         } else {
@@ -118,12 +122,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             return false;
         }
     }
-    
-    function justLettersAscii(event, elemento){
+
+    function justLettersAscii(event, elemento) {
         var keyCode = event.keyCode || event.which;
-        var spanError = document.getElementById(elemento.id+'Error');
-        
-        if((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)){
+        var spanError = document.getElementById(elemento.id + 'Error');
+
+        if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
             spanError.innerHTML = "";
             return true;
         } else {
@@ -131,7 +135,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             return false;
         }
     }
-    
+
 </script>
 </body>
 </html>
