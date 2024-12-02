@@ -5,6 +5,8 @@
 package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.AlumnoDAOImplementation;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.EstadoDAOImplementation;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.MunicipioDAOImplementation;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.SemestreDAOImplementation;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/Alumno")
@@ -33,6 +36,12 @@ public class AlumnoController {
     
     @Autowired
     private SemestreDAOImplementation semestreDAOImplementation;
+    
+    @Autowired
+    private EstadoDAOImplementation estadoDAOImplementation;
+    
+    @Autowired
+    private MunicipioDAOImplementation municipioDAOImplementation;
     
     @GetMapping
     public String Inicio(Model model){
@@ -50,7 +59,7 @@ public class AlumnoController {
         Result resultSemestre = semestreDAOImplementation.GetAll();
         model.addAttribute("semestres", resultSemestre.objects);
         
-        
+        model.addAttribute("estados", estadoDAOImplementation.GetAll().objects);
         
         if (IdAlumno == 0 ) { // Agregar
             AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
@@ -91,6 +100,13 @@ public class AlumnoController {
         }
         
         return "redirect:/Alumno";
+    }
+    
+    @GetMapping("/GetMunicipioByEstado/{IdEstado}")
+    @ResponseBody // JSON
+    public Result GetMunicipioByEstado(@PathVariable int IdEstado){
+        
+        return municipioDAOImplementation.GetMunicipioByEstado(IdEstado);
     }
     
     
