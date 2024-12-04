@@ -109,6 +109,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <!--<input id="SemestreAlumno" type="text" class="form-control" placeholder="Semestre" th:field="*{Alumno.Semestre.IdSemestre}">-->
                     </div>     
                 </div>
+                
+                <div class="col-md-4">
+                    <label for="ColoniaAlumno" class="form-label">Colonia</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
+                        <select id="ddlColonia" class="form-select" >
+                            <option value=0>Seleccione una colonia</option>
+                        </select>
+                        <!--<input id="SemestreAlumno" type="text" class="form-control" placeholder="Semestre" th:field="*{Alumno.Semestre.IdSemestre}">-->
+                    </div>     
+                </div>
+                
+                <div class="col-md-6">
+                        <label  class="form-label">Codigo Postal</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="basic-addon1">CP</span>
+                            <input id="CodigoPostalAlumno" type="text" class="form-control" placeholder="01650" >
+                        </div>     
+                    </div>
                 <!--                <button class="btn btn-success" type="submit"> Agregar</button>-->
 
                 <button th:if="*{Alumno.IdAlumno == 0}" class="btn btn-success" type="submit"> Agregar</button>
@@ -167,10 +186,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 url: "/Alumno/GetMunicipioByEstado/" + document.getElementById("ddlEstado").value,
                 datatype: "json",
                 success: function (data, textStatus, jqXHR) {
+                    console.log(textStatus);
                     $("#ddlMunicipio").empty();
-                    $("#ddlMunicipio").append('<option value=0>Selecciona un municipio</option>')
+                    $("#ddlMunicipio").append('<option value=0>Selecciona un </option>')
                     $.each(data.objects, function(i, municipio){
-                        $("#ddlMunicipio").append('<option value='+ municipio.idMunicipio + '>'+municipio.nombre+'</option>')
+                        $("#ddlMunicipio").append('<option value='+ municipio.idMunicipio + ' data-cp=1 >'+municipio.nombre+'</option>')
                     });
         
                 },
@@ -179,6 +199,32 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 }
             });
         });
+        
+        
+        $("#ddlMunicipio").change(function () {
+            console.log("Cambio el estado")
+            $.ajax({
+                type: "GET",
+                url: "/Alumno/GetColoniaByMunicipio/" + document.getElementById("ddlMunicipio").value,
+                datatype: "json",
+                success: function (data, textStatus, jqXHR) {
+                    console.log(textStatus);
+                    $("#ddlColonia").empty();
+                    $("#ddlColonia").append('<option value=0>Selecciona un colonia </option>')
+                    $.each(data.objects, function(i, colonia){
+                        $("#ddlColonia").append('<option value='+ colonia.idColonia + ' data-cp="' + colonia.codigoPostal + '">'+colonia.nombre+'</option>')
+                    });
+        
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Problemas :c")
+                }
+            });
+        });
+        
+        $("#ddlColonia").change(function (){
+            $("#CodigoPostalAlumno").val($("#ddlColonia option:selected").data("cp"));
+        })
     });
 
 </script>

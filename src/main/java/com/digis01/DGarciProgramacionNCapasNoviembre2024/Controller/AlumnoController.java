@@ -5,6 +5,7 @@
 package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.AlumnoDAOImplementation;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.ColoniaDAOImplementation;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.EstadoDAOImplementation;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.MunicipioDAOImplementation;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.DAO.SemestreDAOImplementation;
@@ -42,6 +43,9 @@ public class AlumnoController {
     
     @Autowired
     private MunicipioDAOImplementation municipioDAOImplementation;
+    
+    @Autowired
+    private ColoniaDAOImplementation coloniaDAOImplementation;
     
     @GetMapping
     public String Inicio(Model model){
@@ -109,5 +113,11 @@ public class AlumnoController {
         return municipioDAOImplementation.GetMunicipioByEstado(IdEstado);
     }
     
+    
+    @GetMapping("/GetColoniaByMunicipio/{IdMunicipio}")
+    @ResponseBody
+    public Result GetColoniaByMunicipio(@PathVariable int IdMunicipio){
+        return coloniaDAOImplementation.GetColoniaByMunicipio(IdMunicipio);
+    }
     
 }
