@@ -13,6 +13,7 @@ import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Colonia;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Direccion;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Municipio;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Result;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Semestre;
 import jakarta.validation.Valid;
@@ -51,7 +52,19 @@ public class AlumnoController {
     public String Inicio(Model model){
         // Model - mandar información por medio de un modelo a la vista
         Result result = alumnoDAOImplementation.GetAll();
+        Alumno alumnoBusqueda = new Alumno();
+        alumnoBusqueda.Semestre = new Semestre();
+        model.addAttribute("alumnoBusqueda", alumnoBusqueda);
+        model.addAttribute("alumnosDireccion", (List<AlumnoDireccion>) result.object);
         
+        return "AlumnoIndex";
+    }
+    
+    @PostMapping
+    public String Inicio(Model model, @ModelAttribute Alumno alumnoBusqueda){
+        // Model - mandar información por medio de un modelo a la vista
+        Result result = alumnoDAOImplementation.GetAll(); // GetAllDinamico
+        model.addAttribute("alumnoBusqueda",alumnoBusqueda);
         model.addAttribute("alumnosDireccion", (List<AlumnoDireccion>) result.object);
         
         return "AlumnoIndex";
@@ -76,7 +89,8 @@ public class AlumnoController {
         } else { // editar
             
             Result result = alumnoDAOImplementation.GetById(IdAlumno);
-            
+            AlumnoDireccion alumnoDireccion = (AlumnoDireccion) result.object;
+            model.addAttribute("municipios", municipioDAOImplementation.GetMunicipioByEstado(alumnoDireccion.Direccion.Colonia.Municipio.Estado.getIdEstado()).objects);
             model.addAttribute("alumnoDireccion", (AlumnoDireccion) result.object);
         
         }

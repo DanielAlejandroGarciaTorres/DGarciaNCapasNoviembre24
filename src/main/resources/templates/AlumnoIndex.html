@@ -15,7 +15,40 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <body>
         <div class="container">
             
-            
+            <form th:acrion="@{/Alumno}" method="post" th:object="${alumnoBusqueda}">
+                <div class="row">
+                    <div class="col">
+                        <label for="NombreAlumno" class="form-label">Nombre</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
+                            <input id="NombreAlumno" type="text" class="form-control" placeholder="Nombre" th:field="*{Nombre}">
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <label for="ApellidoPAlumno" class="form-label">Apellido Paterno</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
+                            <input id="ApellidoPAlumno" type="text" class="form-control" placeholder="Nombre" th:field="*{ApellidoPaterno}" onkeypress="return justLetters(event, this)">
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <label for="ApellidoMAlumno" class="form-label">Apellido Materno</label>
+                        <div class="input-group ">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
+                            <input id="ApellidoMAlumno" type="text" class="form-control" placeholder="Nombre" th:field="*{ApellidoMaterno}" onkeypress="return justLetters(event, this)">
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <label for="SemestreAlumno" class="form-label">Semestre</label>
+                        <div class="input-group ">
+                            <input id="SemestreAlumno" type="text" class="form-control" placeholder="Nombre" th:field="*{Semestre.IdSemestre}" onkeypress="return justLetters(event, this)">
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-success" type="submit"> Busqueda</button>
+                    </div>
+                </div>
+            </form>
             
             <a class="btn btn-success" th:href="@{/Alumno/form/{IdAlumno}(IdAlumno=0)}">Agregar</a>
             
