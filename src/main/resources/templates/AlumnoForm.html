@@ -15,10 +15,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </head>
     <body>
         <div class="container">
-            <form th:action="@{/Alumno/form}" method="post" th:object="${alumnoDireccion}" >
+            <form th:action="@{/Alumno/form}" method="post" th:object="${alumnoDireccion}" enctype="multipart/form-data">
 
                 <input type="hidden" name="IdAlumno" th:field="*{Alumno.IdAlumno}">
 
+                <div class="row mb-3 text-center">
+                    <div class="col-md-3 mx-auto">
+                        <div class="form/gorup">
+                            <label for="imagenFile">Imagen:</label>
+                            <input type="file" class="form-control" name="imagenFile" id="imagenFile">
+                        </div>
+                    </div>
+                </div>
+                
+                
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="NombreAlumno" class="form-label">Nombre</label>
