@@ -3,18 +3,12 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    </head>
-    <body>
-        
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+    <body layout:fragment="body">
+
         <div class="container">
             <form th:action="@{/Alumno/form}" method="post" th:object="${alumnoDireccion}" enctype="multipart/form-data">
 
@@ -29,8 +23,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="NombreAlumno" class="form-label">Nombre</label>
@@ -110,7 +104,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <!--<input id="SemestreAlumno" type="text" class="form-control" placeholder="Semestre" th:field="*{Alumno.Semestre.IdSemestre}">-->
                     </div>     
                 </div>
-                
+
                 <div class="col-md-4">
                     <label for="MunicipioAlumno" class="form-label">Municipio</label>
                     <div class="input-group ">
@@ -122,7 +116,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <!--<input id="SemestreAlumno" type="text" class="form-control" placeholder="Semestre" th:field="*{Alumno.Semestre.IdSemestre}">-->
                     </div>     
                 </div>
-                
+
                 <div class="col-md-4">
                     <label for="ColoniaAlumno" class="form-label">Colonia</label>
                     <div class="input-group ">
@@ -133,14 +127,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <!--<input id="SemestreAlumno" type="text" class="form-control" placeholder="Semestre" th:field="*{Alumno.Semestre.IdSemestre}">-->
                     </div>     
                 </div>
-                
+
                 <div class="col-md-6">
-                        <label  class="form-label">Codigo Postal</label>
-                        <div class="input-group ">
-                            <span class="input-group-text" id="basic-addon1">CP</span>
-                            <input id="CodigoPostalAlumno" type="text" class="form-control" placeholder="01650" >
-                        </div>     
-                    </div>
+                    <label  class="form-label">Codigo Postal</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id="basic-addon1">CP</span>
+                        <input id="CodigoPostalAlumno" type="text" class="form-control" placeholder="01650" >
+                    </div>     
+                </div>
                 <!--                <button class="btn btn-success" type="submit"> Agregar</button>-->
 
                 <button th:if="*{Alumno.IdAlumno == 0}" class="btn btn-success" type="submit"> Agregar</button>
@@ -161,87 +155,91 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </form>
 
 </div>
+
 <script>
-    function justLetters(event, elemento) {
-        var regEx = /^[a-zA-Z]+$/;
-        var key = event.key;
-        var spanError = document.getElementById(elemento.id + 'Error');
+            function justLetters(event, elemento) {
+                var regEx = /^[a-zA-Z]+$/;
+                var key = event.key;
+                var spanError = document.getElementById(elemento.id + 'Error');
 
-        if (key.match(regEx)) {
-            spanError.innerHTML = "";
-            return true;
-        } else {
-            spanError.innerHTML = "Solo letras";
-            return false;
-        }
-    }
-
-    function justLettersAscii(event, elemento) {
-        var keyCode = event.keyCode || event.which;
-        var spanError = document.getElementById(elemento.id + 'Error');
-
-        if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
-            spanError.innerHTML = "";
-            return true;
-        } else {
-            spanError.innerHTML = "Solo letras";
-            return false;
-        }
-    }
-
-    $(document).ready(function () {
-        console.log("Hola desde js");
-
-        $("#ddlEstado").change(function () {
-            console.log("Cambio el estado")
-            $.ajax({
-                type: "GET",
-                url: "/Alumno/GetMunicipioByEstado/" + document.getElementById("ddlEstado").value,
-                datatype: "json",
-                success: function (data, textStatus, jqXHR) {
-                    console.log(textStatus);
-                    $("#ddlMunicipio").empty();
-                    $("#ddlMunicipio").append('<option value=0>Selecciona un </option>')
-                    $.each(data.objects, function(i, municipio){
-                        $("#ddlMunicipio").append('<option value='+ municipio.idMunicipio + ' data-cp=1 >'+municipio.nombre+'</option>')
-                    });
-        
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Problemas :c")
+                if (key.match(regEx)) {
+                    spanError.innerHTML = "";
+                    return true;
+                } else {
+                    spanError.innerHTML = "Solo letras";
+                    return false;
                 }
-            });
-        });
-        
-        
-        $("#ddlMunicipio").change(function () {
-            console.log("Cambio el estado")
-            $.ajax({
-                type: "GET",
-                url: "/Alumno/GetColoniaByMunicipio/" + document.getElementById("ddlMunicipio").value,
-                datatype: "json",
-                success: function (data, textStatus, jqXHR) {
-                    console.log(textStatus);
-                    $("#ddlColonia").empty();
-                    $("#ddlColonia").append('<option value=0>Selecciona un colonia </option>')
-                    $.each(data.objects, function(i, colonia){
-                        $("#ddlColonia").append('<option value='+ colonia.idColonia + ' data-cp="' + colonia.codigoPostal + '">'+colonia.nombre+'</option>')
-                    });
-        
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Problemas :c")
-                }
-            });
-        });
-        
-        $("#ddlColonia").change(function (){
-            $("#CodigoPostalAlumno").val($("#ddlColonia option:selected").data("cp"));
-        })
-    });
+            }
 
-</script>
+            function justLettersAscii(event, elemento) {
+                var keyCode = event.keyCode || event.which;
+                var spanError = document.getElementById(elemento.id + 'Error');
+
+                if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
+                    spanError.innerHTML = "";
+                    return true;
+                } else {
+                    spanError.innerHTML = "Solo letras";
+                    return false;
+                }
+            }
+
+            $(document).ready(function () {
+                console.log("Hola desde js");
+
+                $("#ddlEstado").change(function () {
+                    console.log("Cambio el estado")
+                    $.ajax({
+                        type: "GET",
+                        url: "/Alumno/GetMunicipioByEstado/" + document.getElementById("ddlEstado").value,
+                        datatype: "json",
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(textStatus);
+                            $("#ddlMunicipio").empty();
+                            $("#ddlMunicipio").append('<option value=0>Selecciona un </option>')
+                            $.each(data.objects, function (i, municipio) {
+                                $("#ddlMunicipio").append('<option value=' + municipio.idMunicipio + ' data-cp=1 >' + municipio.nombre + '</option>')
+                            });
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("Problemas :c")
+                        }
+                    });
+                });
+
+
+                $("#ddlMunicipio").change(function () {
+                    console.log("Cambio el estado")
+                    $.ajax({
+                        type: "GET",
+                        url: "/Alumno/GetColoniaByMunicipio/" + document.getElementById("ddlMunicipio").value,
+                        datatype: "json",
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(textStatus);
+                            $("#ddlColonia").empty();
+                            $("#ddlColonia").append('<option value=0>Selecciona un colonia </option>')
+                            $.each(data.objects, function (i, colonia) {
+                                $("#ddlColonia").append('<option value=' + colonia.idColonia + ' data-cp="' + colonia.codigoPostal + '">' + colonia.nombre + '</option>')
+                            });
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("Problemas :c")
+                        }
+                    });
+                });
+
+                $("#ddlColonia").change(function () {
+                    $("#CodigoPostalAlumno").val($("#ddlColonia option:selected").data("cp"));
+                })
+            });
+
+        </script>
+
 </body>
+
+        
 </html>
 
 

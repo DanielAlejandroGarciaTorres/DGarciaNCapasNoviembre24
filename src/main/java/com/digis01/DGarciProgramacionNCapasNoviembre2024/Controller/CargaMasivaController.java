@@ -7,8 +7,12 @@ package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +37,29 @@ public class CargaMasivaController {
     public String Inicio(@RequestParam MultipartFile archivo){
         if (archivo != null && !archivo.isEmpty()) {
             //procesar
-            ProcesarArchivo(archivo);
+//            String archivonombre = archivo.getOriginalFilename();
+//            String[] archivoCortado = archivonombre.split("\\.");
+//            String extencionArchivo = archivoCortado[1];
+            
+            String fileExtension  = archivo.getOriginalFilename().split("\\.")[1];
+            
+            if (fileExtension.equals("txt")){
+                ProcesarArchivo(archivo);
+            } else { // xlsx
+                String root = System.getProperty("user.dir"); //ruta base del proecto
+                String path = "src/main/resources/static/archivos";
+                String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"));
+                String absolutePath = root + "/" + path + "/" + fecha + archivo.getOriginalFilename();
+                //try /throw / throws
+                try {
+                    archivo.transferTo(new File(absolutePath)); // copio el archivo en la capeta archivos
+                    List<AlumnoDireccion> listaAlumno = LecturaArchivo(new File(absolutePath));
+                } catch (Exception ex) {
+                    
+                }
+                
+            }
+            
         } else  {
             //Ingresa un archivo para mostrar
         }
@@ -65,5 +91,9 @@ public class CargaMasivaController {
         }
         
         return true;
+    }
+
+    private List<AlumnoDireccion> LecturaArchivo(File file) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
