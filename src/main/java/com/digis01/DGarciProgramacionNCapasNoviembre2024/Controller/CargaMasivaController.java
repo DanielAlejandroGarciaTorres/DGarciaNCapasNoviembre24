@@ -6,14 +6,21 @@ package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
+import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.ResultExcel;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +41,7 @@ public class CargaMasivaController {
     }
     
     @PostMapping
-    public String Inicio(@RequestParam MultipartFile archivo){
+    public String Inicio(@RequestParam MultipartFile archivo, Model model){
         if (archivo != null && !archivo.isEmpty()) {
             //procesar
 //            String archivonombre = archivo.getOriginalFilename();
@@ -54,6 +61,14 @@ public class CargaMasivaController {
                 try {
                     archivo.transferTo(new File(absolutePath)); // copio el archivo en la capeta archivos
                     List<AlumnoDireccion> listaAlumno = LecturaArchivo(new File(absolutePath));
+                    List<ResultExcel> listaErrores = ValidarDatos(listaAlumno);
+                    
+                    if (listaErrores.isEmpty()) {
+                        model.addAttribute("archivoCorrecto", true);
+                    }else {
+                        model.addAttribute("archivoCorrecto", false);
+                    }
+                    
                 } catch (Exception ex) {
                     
                 }
@@ -93,7 +108,48 @@ public class CargaMasivaController {
         return true;
     }
 
-    private List<AlumnoDireccion> LecturaArchivo(File file) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private List<AlumnoDireccion> LecturaArchivo(File archivo) {
+        List<AlumnoDireccion> listaAlumnos = new ArrayList<>();
+        
+        try (XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(archivo))){
+            Sheet workSheet = workbook.getSheetAt(0);
+            
+            for (Row row : workSheet) {
+                AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
+                alumnoDireccion.Alumno = new Alumno();
+                alumnoDireccion.Alumno.setNombre(row.getCell(0).toString());
+                alumnoDireccion.Alumno.setApellidoPaterno(row.getCell(1).toString());
+                
+                //alumnoDireccion.Alumno.setFechaNacimiento(row.getCell(3).getDateCellValue());
+                  
+                listaAlumnos.add(alumnoDireccion);
+            }
+        }catch (Exception ex){
+            
+        }
+        
+        return listaAlumnos;
+        
+    }
+
+    private List<ResultExcel> ValidarDatos(List<AlumnoDireccion> listaAlumno) {
+        int fila = 1;
+        String errorMessage = "";
+        List<ResultExcel> listaErrores = new ArrayList<>();
+        
+        for (AlumnoDireccion alumnoDireccion : listaAlumno) {
+            if (alumnoDireccion.Alumno.getNombre().equals("")) {
+                errorMessage = "Nombre sin información";
+                listaErrores.add(new ResultExcel(fila, errorMessage));
+            }
+            if (alumnoDireccion.Alumno.getApellidoPaterno().equals("")){
+                errorMessage = "Apellido paterno sin información";
+                listaErrores.add(new ResultExcel(fila, errorMessage));
+            }
+            
+            fila++;
+        }
+        
+        return listaErrores;
     }
 }
