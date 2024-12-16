@@ -7,6 +7,7 @@ package com.digis01.DGarciProgramacionNCapasNoviembre2024.Controller;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Alumno;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.AlumnoDireccion;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.ResultExcel;
+import jakarta.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +42,7 @@ public class CargaMasivaController {
     }
     
     @PostMapping
-    public String Inicio(@RequestParam MultipartFile archivo, Model model){
+    public String Inicio(@RequestParam MultipartFile archivo, Model model, HttpSession session){
         if (archivo != null && !archivo.isEmpty()) {
             //procesar
 //            String archivonombre = archivo.getOriginalFilename();
@@ -64,8 +65,11 @@ public class CargaMasivaController {
                     List<ResultExcel> listaErrores = ValidarDatos(listaAlumno);
                     
                     if (listaErrores.isEmpty()) {
+                        session.setAttribute("path", absolutePath);
+                        model.addAttribute("listaErrores", listaErrores);
                         model.addAttribute("archivoCorrecto", true);
                     }else {
+                        model.addAttribute("listaErrores", listaErrores);
                         model.addAttribute("archivoCorrecto", false);
                     }
                     
@@ -80,6 +84,22 @@ public class CargaMasivaController {
         }
         
         return "CargaMasivaIndex";
+    }
+
+    @GetMapping("/procesar")
+    public String CargaMasiva (HttpSession session){
+        
+        String absolutePath = session.getAttribute("path").toString();
+        
+        List<AlumnoDireccion> alumnosDireccion = LecturaArchivo(new File(absolutePath));
+        
+        
+        /*
+        agregarlos
+        */
+        session.removeAttribute("path");
+        
+        return "CargaMasivIndex";
     }
     
     private boolean ProcesarArchivo(MultipartFile archivo){
