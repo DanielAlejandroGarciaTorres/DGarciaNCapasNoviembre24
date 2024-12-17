@@ -56,6 +56,7 @@ public class AlumnoController {
     public String Inicio(Model model) {
         // Model - mandar información por medio de un modelo a la vista
         Result result = alumnoDAOImplementation.GetAll();
+        alumnoDAOImplementation.GetAllJPA();
         Alumno alumnoBusqueda = new Alumno();
         alumnoBusqueda.Semestre = new Semestre();
         model.addAttribute("alumnoBusqueda", alumnoBusqueda);
@@ -79,6 +80,7 @@ public class AlumnoController {
     public String Formulario(@PathVariable int IdAlumno, Model model) {
 
         Result resultSemestre = semestreDAOImplementation.GetAll();
+        
         model.addAttribute("semestres", resultSemestre.objects);
 
         model.addAttribute("estados", estadoDAOImplementation.GetAll().objects);

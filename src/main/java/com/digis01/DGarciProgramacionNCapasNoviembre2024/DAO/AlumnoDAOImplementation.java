@@ -8,6 +8,8 @@ import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Estado;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Municipio;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Result;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Semestre;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -21,7 +23,10 @@ import org.springframework.stereotype.Repository;
 public class AlumnoDAOImplementation implements IAlumnoDAO {
 
     @Autowired // inyección de dependencias (field, setter, constructor)
-    private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate; // interfaz de jdbc
+    
+    @Autowired // conexiones por medio de JPA
+    private EntityManager entityManager;
 
     @Override
     public Result GetAll() {
@@ -86,6 +91,37 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
             result.ex = ex;
         }
         return result;
+    }
+    
+    public Result GetAllJPA(){
+        Result result = new Result();
+        
+        try{
+            
+            //JPQL Java persistence query language
+            
+            TypedQuery<com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno> queryAlumno = entityManager.createQuery("FROM Alumno", com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno.class);
+            List<com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno> listaAlumnos = queryAlumno.getResultList();
+            
+            
+            for (com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno alumnoJPA : listaAlumnos) {
+                AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
+                alumnoDireccion.Alumno.setIdAlumno(alumnoJPA.getIdAlumno());
+                
+                /*por cada elemento de alumno*/
+                
+                //TypedQuery Direccion "From Direccion donde idAlumno = alumnoJPA.IdAlumno"
+                
+                    // si tiene una direccion la asgino
+                    // si no tiene marca un error y se rompe codigo :c
+                    
+            }
+            
+            System.out.println(",");
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return null;
     }
 
 }
