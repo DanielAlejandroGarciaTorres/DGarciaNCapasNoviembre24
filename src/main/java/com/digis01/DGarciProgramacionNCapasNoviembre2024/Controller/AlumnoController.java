@@ -55,12 +55,13 @@ public class AlumnoController {
     @GetMapping
     public String Inicio(Model model) {
         // Model - mandar información por medio de un modelo a la vista
-        Result result = alumnoDAOImplementation.GetAll();
-        alumnoDAOImplementation.GetAllJPA();
+//        Result result = alumnoDAOImplementation.GetAll();
+        Result result = alumnoDAOImplementation.GetAllJPA();
         Alumno alumnoBusqueda = new Alumno();
         alumnoBusqueda.Semestre = new Semestre();
         model.addAttribute("alumnoBusqueda", alumnoBusqueda);
-        model.addAttribute("alumnosDireccion", (List<AlumnoDireccion>) result.object);
+//        model.addAttribute("alumnosDireccion", (List<AlumnoDireccion>) result.object);
+        model.addAttribute("alumnosDireccion", result.objects);
 
         return "AlumnoIndex";
     }

@@ -97,7 +97,7 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
         Result result = new Result();
         
         try{
-            
+            result.objects = new ArrayList<>();
             //JPQL Java persistence query language
             
             TypedQuery<com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno> queryAlumno = entityManager.createQuery("FROM Alumno", com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno.class);
@@ -106,15 +106,30 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
             
             for (com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno alumnoJPA : listaAlumnos) {
                 AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
+                alumnoDireccion.Alumno = new Alumno();
                 alumnoDireccion.Alumno.setIdAlumno(alumnoJPA.getIdAlumno());
+                alumnoDireccion.Alumno.setNombre(alumnoJPA.getNombre());
+                
+                try {
+                TypedQuery<com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Alumno.IdAlumno = :pIdAlumno", com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Direccion.class);
+                queryDireccion.setParameter("pIdAlumno", alumnoJPA.getIdAlumno());
+                com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Direccion direccionJPA = queryDireccion.getSingleResult();
+                
+                alumnoDireccion.Direccion = new Direccion();
+                
+                alumnoDireccion.Direccion.setCalle(direccionJPA.getCalle());
+                } catch (Exception ex){
+                    continue;
+                } finally {
+                    result.objects.add(alumnoDireccion);
+                }
                 
                 /*por cada elemento de alumno*/
                 
                 //TypedQuery Direccion "From Direccion donde idAlumno = alumnoJPA.IdAlumno"
                 
                     // si tiene una direccion la asgino
-                    // si no tiene marca un error y se rompe codigo :c
-                    
+                    // si no tiene marca un error y se rompe codigo :c 
             }
             
             System.out.println(",");
