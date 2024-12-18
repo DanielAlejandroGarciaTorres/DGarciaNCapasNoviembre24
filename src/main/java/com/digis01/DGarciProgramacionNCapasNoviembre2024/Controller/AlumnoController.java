@@ -133,6 +133,12 @@ public class AlumnoController {
 
         if (alumnoDireccion.Alumno.getIdAlumno() == 0) {
             /*Agregar*/
+            
+            alumnoDireccion.Alumno.setApellidoMaterno("Torres");
+            alumnoDireccion.Alumno.setUserName("dgarciatorres");
+            alumnoDireccion.Alumno.setEmail("dgarciatorres@email.com");
+            
+            alumnoDAOImplementation.AddJPA(alumnoDireccion);
         } else {
 
         }

@@ -10,6 +10,7 @@ import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Result;
 import com.digis01.DGarciProgramacionNCapasNoviembre2024.ML.Semestre;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -105,8 +106,8 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
             
             
             for (com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno alumnoJPA : listaAlumnos) {
-                AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
-                alumnoDireccion.Alumno = new Alumno();
+                AlumnoDireccion alumnoDireccion =
+                        
                 alumnoDireccion.Alumno.setIdAlumno(alumnoJPA.getIdAlumno());
                 alumnoDireccion.Alumno.setNombre(alumnoJPA.getNombre());
                 
@@ -137,6 +138,25 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
             System.out.println(ex.getLocalizedMessage());
         }
         return null;
+    }
+
+    @Override
+    @Transactional 
+    public Result AddJPA(AlumnoDireccion alumnoDireccion) {
+        
+        com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno alumnoJPA = new com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno();
+        
+        alumnoJPA.setNombre(alumnoDireccion.Alumno.getNombre());
+        alumnoJPA.setApellidoPaterno(alumnoDireccion.Alumno.getApellidoPaterno());
+        alumnoJPA.setApellidoMaterno(alumnoDireccion.Alumno.getApellidoMaterno());
+        alumnoJPA.setUserName(alumnoDireccion.Alumno.getUserName());
+        alumnoJPA.setEmail(alumnoDireccion.Alumno.getEmail());
+        alumnoJPA.Semestre = new com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Semestre();
+        alumnoJPA.Semestre.setIdSemestre(alumnoDireccion.Alumno.Semestre.getIdSemestre());
+        
+        entityManager.persist(alumnoJPA);
+        entityManager.remove(this);
+        return  null;
     }
 
 }
