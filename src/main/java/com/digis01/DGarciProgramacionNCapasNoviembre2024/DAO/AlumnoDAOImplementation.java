@@ -106,8 +106,8 @@ public class AlumnoDAOImplementation implements IAlumnoDAO {
             
             
             for (com.digis01.DGarciProgramacionNCapasNoviembre2024.JPA.Alumno alumnoJPA : listaAlumnos) {
-                AlumnoDireccion alumnoDireccion =
-                        
+                AlumnoDireccion alumnoDireccion = new AlumnoDireccion();
+                alumnoDireccion.Alumno = new Alumno();
                 alumnoDireccion.Alumno.setIdAlumno(alumnoJPA.getIdAlumno());
                 alumnoDireccion.Alumno.setNombre(alumnoJPA.getNombre());
                 
